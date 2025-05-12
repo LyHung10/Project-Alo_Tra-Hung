@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: springboot-web
+    env: docker
+    plan: free
+    dockerfilePath: Dockerfile
