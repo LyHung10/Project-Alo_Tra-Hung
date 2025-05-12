@@ -1,11 +1,15 @@
-# --------- Stage 1: Build ---------
-FROM maven:3.9.9-openjdk-22 AS build
+# --------- Stage 1: Build (JDK 22) ---------
+FROM eclipse-temurin:22-jdk AS build
 WORKDIR /app
 COPY . .
-RUN mvn clean package -DskipTests
+
+# Cài Maven thủ công
+RUN apt-get update && \
+    apt-get install -y maven && \
+    mvn clean package -DskipTests
 
 # --------- Stage 2: Run ---------
-FROM openjdk:22-jdk-slim
+FROM eclipse-temurin:22-jdk
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
